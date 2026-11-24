@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: Online Shop API
+  version: 1.0.0
+  description: Контракт API каталогу товарів
+servers:
+  - url: http://localhost:3000
+paths:
+  /items:
+    get:
+      summary: Список товарів
+      responses:
+        "200":
+          description: Список товарів
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Item"
+    post:
+      summary: Створити товар
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemRequest"
+      responses:
+        "201":
+          description: Товар створено
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+        "400":
+          description: Помилка валідації
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /items/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Деталі товару
+      responses:
+        "200":
+          description: Товар
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+        "404":
+          description: Товар не знайдено
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      summary: Оновити товар
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemRequest"
+      responses:
+        "200":
+          description: Товар оновлено
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+        "400":
+          description: Помилка валідації
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Товар не знайдено
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      summary: Видалити товар
+      responses:
+        "204":
+          description: Товар видалено
+        "404":
+          description: Товар не знайдено
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /health:
+    get:
+      summary: Перевірка стану сервісу
+      responses:
+        "200":
+          description: Сервіс працює
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: ok
+components:
+  schemas:
+    ItemRequest:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          example: Кружка
+        price:
+          type: number
+          minimum: 0
+          example: 150
+        description:
+          type: string
+          example: Керамічна кружка
+    Item:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Кружка
+        price:
+          type: number
+          example: 150
+        description:
+          type: string
+          example: Керамічна кружка
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: ValidationError
+        code:
+          type: string
+          example: VALIDATION_FAILED
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: name
+              message:
+                type: string
+                example: Name is required
