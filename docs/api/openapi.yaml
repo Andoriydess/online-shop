@@ -99,17 +99,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-  /health:
+    /health:
     get:
       summary: Перевірка стану сервісу
       responses:
         "200":
           description: Сервіс працює
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
-                example: ok
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
 components:
   schemas:
     ItemRequest:

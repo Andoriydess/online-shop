@@ -3,28 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <title>Online Shop</title>
+  <style>
+    body { font-family: sans-serif; max-width: 700px; margin: 2rem auto; }
+    #banner { background: #fde68a; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; }
+    pre { background: #f3f4f6; padding: 0.75rem; min-height: 6rem; white-space: pre-wrap; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+  </style>
 </head>
 <body>
   <h1>Онлайн-магазин</h1>
+  <div id="banner" hidden>Сервер перевантажено. Спробуйте за кілька секунд.</div>
+
+  <h2>Товари</h2>
   <button id="load">Load items</button>
   <ul id="list"></ul>
 
-  <script>
-    document.getElementById("load").addEventListener("click", async () => {
-      const list = document.getElementById("list");
-      list.innerHTML = "";
-      try {
-        const res = await fetch("/items");
-        const items = await res.json();
-        items.forEach((item) => {
-          const li = document.createElement("li");
-          li.textContent = item.id + ". " + item.name;
-          list.appendChild(li);
-        });
-      } catch (e) {
-        list.textContent = "Помилка завантаження";
-      }
-    });
-  </script>
+  <h2>Замовлення</h2>
+  <input id="title" placeholder="Назва замовлення" value="Buy milk" />
+  <button id="create">Create order</button>
+  <button id="double">Double submit</button>
+  <button id="health">Check health</button>
+
+  <h3>Лог</h3>
+  <pre id="log"></pre>
+
+  <script type="module" src="app.js"></script>
 </body>
 </html>
