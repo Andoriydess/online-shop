@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <title>Online Shop</title>
+</head>
+<body>
+  <h1>Онлайн-магазин</h1>
+  <button id="load">Load items</button>
+  <ul id="list"></ul>
+
+  <script>
+    document.getElementById("load").addEventListener("click", async () => {
+      const list = document.getElementById("list");
+      list.innerHTML = "";
+      try {
+        const res = await fetch("/items");
+        const items = await res.json();
+        items.forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = item.id + ". " + item.name;
+          list.appendChild(li);
+        });
+      } catch (e) {
+        list.textContent = "Помилка завантаження";
+      }
+    });
+  </script>
+</body>
+</html>
