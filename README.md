@@ -149,3 +149,5 @@ curl http://localhost:3000/items
 ## Git-процес
 
 Зміни вносяться у окремих гілках через pull request з подальшим merge у `main`.
+
+![CI](https://github.com/Andoriydess/online-shop/actions/workflows/ci.yml/badge.svg)
